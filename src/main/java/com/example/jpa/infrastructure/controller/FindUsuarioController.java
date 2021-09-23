@@ -1,5 +1,6 @@
 package com.example.jpa.infrastructure.controller;
 
+import com.example.jpa.exception.BeanNotFoundException;
 import com.example.jpa.infrastructure.application.UsuarioService;
 import com.example.jpa.infrastructure.application.UsuarioServicePort;
 import com.example.jpa.infrastructure.dto.output.UsuarioOutputDto;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/usuario")
-public class ControladorGet {
+public class FindUsuarioController {
 
     @Autowired
     UsuarioServicePort usuarioServicePort;
@@ -24,12 +25,12 @@ public class ControladorGet {
     }
 
     @GetMapping("{id}")
-    public UsuarioOutputDto getById(@PathVariable Integer id) throws Exception{
+    public UsuarioOutputDto getById(@PathVariable Integer id) {
         return usuarioServicePort.getById(id);
     }
 
     @GetMapping("name/{name}")
-    public List<UsuarioOutputDto> getByName(@PathVariable String name) throws Exception{
+    public List<UsuarioOutputDto> getByName(@PathVariable String name) {
         return usuarioServicePort.getByName(name);
     }
 

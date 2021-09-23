@@ -50,6 +50,11 @@ public class Usuario {
     Date created_date;
 
     public Usuario(UsuarioInputDto uin) {
+        this.modificarUsuario(uin);
+
+    }
+
+    public void modificarUsuario(UsuarioInputDto uin) {
         if(uin == null) {
             return ;
         }
@@ -62,7 +67,6 @@ public class Usuario {
         if (uin.getCity()!=null) this.city = uin.getCity();
         if (uin.getActive()!=null) this.active = uin.getActive();
         if (uin.getCreated_date()!=null) this.created_date = uin.getCreated_date();
-
     }
 
 }

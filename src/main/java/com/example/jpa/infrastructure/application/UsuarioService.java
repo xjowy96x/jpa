@@ -1,14 +1,19 @@
 package com.example.jpa.infrastructure.application;
 
 import com.example.jpa.domain.Usuario;
+import com.example.jpa.exception.BeanNotFoundException;
+import com.example.jpa.exception.BeanUnprocesableException;
 import com.example.jpa.infrastructure.repository.UsuarioRepositorio;
 import com.example.jpa.infrastructure.dto.output.UsuarioOutputDto;
 import com.example.jpa.infrastructure.dto.input.UsuarioInputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.Errors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService implements UsuarioServicePort{
@@ -18,35 +23,31 @@ public class UsuarioService implements UsuarioServicePort{
 
     public List<UsuarioOutputDto> getAll() {
         List<Usuario> usuarioList = usuarioRepositorio.findAll();
-        List<UsuarioOutputDto> usuarioOutputDtoList = new ArrayList<>();
-        for(Usuario uaxu : usuarioList) {
-            UsuarioOutputDto usuarioOutputDto = new UsuarioOutputDto(uaxu);
-            usuarioOutputDtoList.add(usuarioOutputDto);
-        }
-        return usuarioOutputDtoList;
+
+        return usuarioRepositorio.findAll().stream().map(p -> new UsuarioOutputDto(p)).collect(Collectors.toList());
+
     }
 
 
-    public UsuarioOutputDto getById(Integer id) throws Exception{
-        Usuario usuario = usuarioRepositorio.findById(id).orElseThrow(() -> new Exception("No encontrado"));
+    public UsuarioOutputDto getById(Integer id) {
+        Usuario usuario = usuarioRepositorio.findById(id).orElseThrow(() -> new BeanNotFoundException("Usuario: con id= " + id + " no encontrado"));
         UsuarioOutputDto usuarioOutputDto = new UsuarioOutputDto(usuario);
         return usuarioOutputDto;
     }
 
 
-    public List<UsuarioOutputDto> getByName(String name) throws Exception{
+    public List<UsuarioOutputDto> getByName(String name){
         List<Usuario> usuarioList = usuarioRepositorio.getByName(name);
-        //Preguntar como hacer con streams
-        List<UsuarioOutputDto> usuarioOutputDtoList = new ArrayList<>();
-        for(Usuario uaxu : usuarioList) {
-            UsuarioOutputDto usuarioOutputDto = new UsuarioOutputDto(uaxu);
-            usuarioOutputDtoList.add(usuarioOutputDto);
-        }
-        return usuarioOutputDtoList;
+
+        return usuarioRepositorio.getByName(name).stream().map(p -> new UsuarioOutputDto(p)).collect(Collectors.toList());
+
     }
 
 
-    public UsuarioOutputDto anaidirUsuario(UsuarioInputDto u) {
+    public UsuarioOutputDto addUsuario(UsuarioInputDto u, Errors errors) throws BeanUnprocesableException {
+        if(errors.hasErrors()) {
+            throw new BeanUnprocesableException(errors.getFieldError().toString());
+        }
         Usuario usuario = new Usuario(u);
         usuarioRepositorio.saveAndFlush(usuario);
         UsuarioOutputDto usuarioOutputDto = new UsuarioOutputDto(usuario);
@@ -54,18 +55,13 @@ public class UsuarioService implements UsuarioServicePort{
     }
 
 
-    public UsuarioOutputDto updateById(Integer id, UsuarioInputDto u) throws Exception{
-        Usuario usuario = usuarioRepositorio.findById(id).orElseThrow(() -> new Exception("No encontrado"));
+    public UsuarioOutputDto updateById(Integer id, UsuarioInputDto u, Errors errors) throws BeanNotFoundException, BeanUnprocesableException {
+        if(errors.hasErrors()) {
+            throw new BeanUnprocesableException(errors.getFieldError().toString());
+        }
+        Usuario usuario = usuarioRepositorio.findById(id).orElseThrow(() -> new BeanNotFoundException("Usuario: con id= " + id + " no encontrado"));
         if(usuario != null) {
-            usuario.setActive(u.getActive());
-            usuario.setCity(u.getCity());
-            usuario.setCompany_email(u.getCompany_email());
-            usuario.setName(u.getName());
-            usuario.setSurname(u.getSurname());
-            usuario.setUser(u.getUser());
-            usuario.setPersonal_email(u.getPersonal_email());
-            usuario.setPassword(u.getPassword());
-            usuario.setCreated_date(u.getCreated_date());
+            usuario.modificarUsuario(u);
         }
         usuarioRepositorio.saveAndFlush(usuario);
 
@@ -74,8 +70,8 @@ public class UsuarioService implements UsuarioServicePort{
     }
 
 
-    public void deleteUsuarioById(Integer id) {
-        usuarioRepositorio.delete(usuarioRepositorio.getById(id));
+    public void deleteUsuarioById(Integer id) throws BeanNotFoundException{
+        usuarioRepositorio.delete(usuarioRepositorio.findById(id).orElseThrow(() -> new BeanNotFoundException("Usuario: con id= " + id + " no encontrado")));
     }
 
 }
