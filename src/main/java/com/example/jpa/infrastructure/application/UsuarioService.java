@@ -10,9 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,7 +21,6 @@ public class UsuarioService implements UsuarioServicePort{
     UsuarioRepositorio usuarioRepositorio;
 
     public List<UsuarioOutputDto> getAll() {
-        List<Usuario> usuarioList = usuarioRepositorio.findAll();
 
         return usuarioRepositorio.findAll().stream().map(p -> new UsuarioOutputDto(p)).collect(Collectors.toList());
 
@@ -37,7 +35,6 @@ public class UsuarioService implements UsuarioServicePort{
 
 
     public List<UsuarioOutputDto> getByName(String name){
-        List<Usuario> usuarioList = usuarioRepositorio.getByName(name);
 
         return usuarioRepositorio.getByName(name).stream().map(p -> new UsuarioOutputDto(p)).collect(Collectors.toList());
 
