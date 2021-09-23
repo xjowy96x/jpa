@@ -24,15 +24,17 @@ public class UsuarioOutputDto {
 
     public UsuarioOutputDto(Usuario u) {
         this.id_persona = u.getId_persona();
-        this.user = u.getUser();
-        this.password = u.getPassword();
-        this.name = u.getName();
-        this.surname = u.getSurname();
-        this.company_email = u.getCompany_email();
-        this.personal_email = u.getPersonal_email();
-        this.city = u.getCity();
-        this.active = u.getActive();
-        this.created_date = u.getCreated_date();
+        if (u.getUser()!=null)  this.user = u.getUser();
+        if (u.getPassword()!=null) this.password = u.getPassword();
+        if (u.getName()!=null) this.name = u.getName();
+        if (u.getSurname()!=null) this.surname = u.getSurname();
+        if (u.getCompany_email()!=null) this.company_email = u.getCompany_email();
+        if (u.getPersonal_email()!=null) this.personal_email = u.getPersonal_email();
+        if (u.getCity()!=null) this.city = u.getCity();
+        if (u.getActive()!=null) this.active = u.getActive();
+        if (u.getCreated_date()!=null) this.created_date = u.getCreated_date();
+
+
     }
 
 }

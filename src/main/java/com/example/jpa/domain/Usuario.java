@@ -50,15 +50,18 @@ public class Usuario {
     Date created_date;
 
     public Usuario(UsuarioInputDto uin) {
-        this.user = uin.getUser();
-        this.password = uin.getPassword();
-        this.name = uin.getName();
-        this.surname = uin.getSurname();
-        this.company_email = uin.getCompany_email();
-        this.personal_email = uin.getPersonal_email();
-        this.city = uin.getCity();
-        this.active = uin.getActive();
-        this.created_date = uin.getCreated_date();
+        if(uin == null) {
+            return ;
+        }
+        if (uin.getUser()!=null)  this.user = uin.getUser();
+        if (uin.getPassword()!=null) this.password = uin.getPassword();
+        if (uin.getName()!=null) this.name = uin.getName();
+        if (uin.getSurname()!=null) this.surname = uin.getSurname();
+        if (uin.getCompany_email()!=null) this.company_email = uin.getCompany_email();
+        if (uin.getPersonal_email()!=null) this.personal_email = uin.getPersonal_email();
+        if (uin.getCity()!=null) this.city = uin.getCity();
+        if (uin.getActive()!=null) this.active = uin.getActive();
+        if (uin.getCreated_date()!=null) this.created_date = uin.getCreated_date();
 
     }
 
