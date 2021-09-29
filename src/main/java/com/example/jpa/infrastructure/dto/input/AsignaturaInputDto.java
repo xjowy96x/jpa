@@ -1,4 +1,4 @@
-package com.example.jpa.infrastructure.dto.asignatura.input;
+package com.example.jpa.infrastructure.dto.input;
 
 import com.example.jpa.domain.Student;
 import lombok.Data;

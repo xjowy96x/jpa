@@ -1,4 +1,4 @@
-package com.example.jpa.infrastructure.dto.profesor.output;
+package com.example.jpa.infrastructure.dto.output;
 
 import com.example.jpa.domain.Profesor;
 import com.example.jpa.domain.Student;
@@ -12,19 +12,19 @@ import java.util.List;
 public class ProfesorOutputDto {
 
     String id_profesor;
-    Usuario id_usuario;
+    int id_usuario;
     String coments;
     String branch;
-    List<Student> id_student = new ArrayList<>();
+//    List<Student> id_student = new ArrayList<>();
 
 
 
     public ProfesorOutputDto(Profesor u) {
         this.id_profesor = u.getId_profesor();
-        if (u.getUsuario()!=null)  this.id_usuario = u.getUsuario();
+        if (u.getUsuario()!=null)  this.id_usuario = u.getUsuario().getId_user();
         if (u.getComents()!=null) this.coments = u.getComents();
         if (u.getBranch()!=null) this.branch = u.getBranch();
-        id_student = u.getId_student();
+ //       id_student = u.getId_student();
 
 
     }

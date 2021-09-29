@@ -1,6 +1,6 @@
 package com.example.jpa.domain;
 
-import com.example.jpa.infrastructure.dto.profesor.input.ProfesorInputDto;
+import com.example.jpa.infrastructure.dto.input.ProfesorInputDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -20,14 +20,13 @@ public class Profesor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     String id_profesor;
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario")
     Usuario usuario;
     String coments;
     @Column(nullable = false)
     String branch;
-    @OneToMany(mappedBy = "id_profesor",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "id_profesor",cascade = CascadeType.ALL)
     List<Student> id_student = new ArrayList<>();
 
 

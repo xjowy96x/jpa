@@ -1,4 +1,4 @@
-package com.example.jpa.infrastructure.dto.student.input;
+package com.example.jpa.infrastructure.dto.input;
 
 import com.example.jpa.domain.Asignatura;
 import com.example.jpa.domain.Usuario;

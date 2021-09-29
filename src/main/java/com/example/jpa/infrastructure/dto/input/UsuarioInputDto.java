@@ -1,4 +1,4 @@
-package com.example.jpa.infrastructure.dto.usuario.input;
+package com.example.jpa.infrastructure.dto.input;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;

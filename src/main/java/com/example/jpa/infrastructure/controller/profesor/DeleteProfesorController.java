@@ -1,8 +1,8 @@
 package com.example.jpa.infrastructure.controller.profesor;
 
 import com.example.jpa.exception.BeanNotFoundException;
-import com.example.jpa.infrastructure.application.profesor.ProfesorServicePort;
-import com.example.jpa.infrastructure.application.student.StudentServicePort;
+import com.example.jpa.infrastructure.application.port.ProfesorServicePort;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +17,7 @@ public class DeleteProfesorController {
     ProfesorServicePort profesorServicePort;
 
     @DeleteMapping("{id}")
-    public void deleteProfesorById(@PathVariable("id") String id) throws BeanNotFoundException {
+    public void deleteProfesorById(@PathVariable("id") String id) throws BeanNotFoundException, NotFoundException {
         profesorServicePort.deleteProfesorById(id);
     }
 

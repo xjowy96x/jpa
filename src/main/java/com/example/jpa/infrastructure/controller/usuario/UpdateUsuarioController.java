@@ -2,9 +2,9 @@ package com.example.jpa.infrastructure.controller.usuario;
 
 import com.example.jpa.exception.BeanNotFoundException;
 import com.example.jpa.exception.BeanUnprocesableException;
-import com.example.jpa.infrastructure.application.usuario.UsuarioServicePort;
-import com.example.jpa.infrastructure.dto.usuario.output.UsuarioOutputDto;
-import com.example.jpa.infrastructure.dto.usuario.input.UsuarioInputDto;
+import com.example.jpa.infrastructure.application.port.UsuarioServicePort;
+import com.example.jpa.infrastructure.dto.output.UsuarioOutputDto;
+import com.example.jpa.infrastructure.dto.input.UsuarioInputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;

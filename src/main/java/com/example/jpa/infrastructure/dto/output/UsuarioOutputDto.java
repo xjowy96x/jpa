@@ -1,4 +1,4 @@
-package com.example.jpa.infrastructure.dto.usuario.output;
+package com.example.jpa.infrastructure.dto.output;
 
 import com.example.jpa.domain.Usuario;
 import lombok.Data;

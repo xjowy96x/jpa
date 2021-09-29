@@ -1,4 +1,4 @@
-package com.example.jpa.infrastructure.dto.profesor.input;
+package com.example.jpa.infrastructure.dto.input;
 
 import com.example.jpa.domain.Usuario;
 import lombok.Data;

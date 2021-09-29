@@ -1,20 +1,17 @@
-package com.example.jpa.infrastructure.application.asignatura;
+package com.example.jpa.infrastructure.application;
 
 import com.example.jpa.domain.Asignatura;
-import com.example.jpa.domain.Profesor;
 import com.example.jpa.domain.Student;
-import com.example.jpa.domain.Usuario;
 import com.example.jpa.exception.BeanNotFoundException;
 import com.example.jpa.exception.BeanUnprocesableException;
-import com.example.jpa.infrastructure.application.profesor.ProfesorServicePort;
-import com.example.jpa.infrastructure.dto.asignatura.input.AsignaturaInputDto;
-import com.example.jpa.infrastructure.dto.asignatura.output.AsignaturaOutputDto;
-import com.example.jpa.infrastructure.dto.profesor.input.ProfesorInputDto;
-import com.example.jpa.infrastructure.dto.profesor.output.ProfesorOutputDto;
+import com.example.jpa.infrastructure.application.port.AsignaturaServicePort;
+import com.example.jpa.infrastructure.dto.input.AsignaturaInputDto;
+import com.example.jpa.infrastructure.dto.output.AsignaturaOutputDto;
 import com.example.jpa.infrastructure.repository.AsignaturaRepository;
 import com.example.jpa.infrastructure.repository.ProfesorRepository;
 import com.example.jpa.infrastructure.repository.StudentRepository;
 import com.example.jpa.infrastructure.repository.UsuarioRepositorio;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -27,10 +24,6 @@ import java.util.stream.Collectors;
 public class AsignaturaService implements AsignaturaServicePort {
 
     @Autowired
-    ProfesorRepository profesorRepository;
-    @Autowired
-    UsuarioRepositorio usuarioRepositorio;
-    @Autowired
     StudentRepository studentRepository;
     @Autowired
     AsignaturaRepository asignaturaRepository;
@@ -41,9 +34,7 @@ public class AsignaturaService implements AsignaturaServicePort {
 
 
     public AsignaturaOutputDto getById(String id) {
-
         Asignatura asignatura = asignaturaRepository.findById(id).orElseThrow(() -> new BeanNotFoundException("Asignatura: con id= " + id + " no encontrado"));
-
         return new AsignaturaOutputDto(asignatura);
     }
 
@@ -57,14 +48,13 @@ public class AsignaturaService implements AsignaturaServicePort {
         if(asignaturaInputDto.getStudentList() != null) {
             for(String s : asignaturaInputDto.getStudentList()) {
                 Student student = studentRepository.findById(s).orElseThrow(() -> new BeanNotFoundException("Student: con id= " + s + " no encontrado"));
-                List<Asignatura> asignaturaList = student.getAsignaturaList();
+                List<Asignatura> asignaturaList = student.getAsignatura();
                 asignaturaList.add(a);
-                student.setAsignaturaList(asignaturaList);
+                student.setAsignatura(asignaturaList);
                 studentList.add(student);
-                studentRepository.saveAndFlush(student);
             }
         }
-        a.setStudentList(studentList);
+        a.setStudent(studentList);
         asignaturaRepository.saveAndFlush(a);
         return new AsignaturaOutputDto(a);
     }
@@ -72,24 +62,35 @@ public class AsignaturaService implements AsignaturaServicePort {
 
 
 
-    public AsignaturaOutputDto updateById(String id, AsignaturaInputDto profesorInputDto, Errors errors) throws BeanNotFoundException, BeanUnprocesableException {
+    public AsignaturaOutputDto updateById(String id, AsignaturaInputDto asignaturaInputDto, Errors errors) throws BeanNotFoundException, BeanUnprocesableException {
         if(errors.hasErrors()) {
             throw new BeanUnprocesableException(errors.getFieldError().toString());
         }
-//        Profesor profesor = profesorRepository.findById(id).orElseThrow(() -> new BeanNotFoundException("Usuario: con id= " + id + " no encontrado"));
-//        Usuario user = profesorRepository.findById(id).orElseThrow(() -> new BeanNotFoundException("Usuario: con id= " + id + " no encontrado"));
-//        Student
-//
-//        modificarProfesor()
-//        profesorRepository.saveAndFlush(profesor);
-//
-//        ProfesorOutputDto profesorOutputDto = new ProfesorOutputDto(profesor);
-        return null;
+        Asignatura a = asignaturaRepository.findById(id).orElseThrow(() -> new BeanNotFoundException("Asignatura: con id= " + id + " no encontrado"));;
+        List<Student> studentList = new ArrayList<>();
+        if(asignaturaInputDto.getStudentList() != null) {
+            for(String s : asignaturaInputDto.getStudentList()) {
+                Student student = studentRepository.findById(s).orElseThrow(() -> new BeanNotFoundException("Student: con id= " + s + " no encontrado"));
+                List<Asignatura> asignaturaList = student.getAsignatura();
+                asignaturaList.add(a);
+                student.setAsignatura(asignaturaList);
+                studentList.add(student);
+            }
+        }
+        a.modificarAsignatura(asignaturaInputDto,studentList);
+        asignaturaRepository.saveAndFlush(a);
+        return new AsignaturaOutputDto(a);
     }
 
 
-    public void deleteAsignaturaById(String id) throws BeanNotFoundException{
-        asignaturaRepository.delete(asignaturaRepository.findById(id).orElseThrow(() -> new BeanNotFoundException("Asignatura: con id= " + id + " no encontrado")));
+    public void deleteAsignaturaById(String id) throws BeanNotFoundException,NotFoundException{
+        Asignatura asignatura = asignaturaRepository.findById(id).orElseThrow(() -> new BeanNotFoundException("Asignatura: con id= " + id + " no encontrado"));
+        List<Student> studentList = asignatura.getStudent();
+        if(studentList != null) {
+            throw new NotFoundException("La asignatura tiene estudiantes, no puede ser borrada.");
+        } else {
+            asignaturaRepository.delete(asignaturaRepository.findById(id).orElseThrow(() -> new BeanNotFoundException("Asignatura: con id= " + id + " no encontrado")));
+        }
     }
 
 }

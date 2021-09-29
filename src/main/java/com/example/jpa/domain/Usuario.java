@@ -1,6 +1,6 @@
 package com.example.jpa.domain;
 
-import com.example.jpa.infrastructure.dto.usuario.input.UsuarioInputDto;
+import com.example.jpa.infrastructure.dto.input.UsuarioInputDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -15,10 +15,9 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
-    //@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     int id_user;
 
     @Column(nullable = false,length = 50)

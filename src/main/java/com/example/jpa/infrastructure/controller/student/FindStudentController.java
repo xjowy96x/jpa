@@ -1,7 +1,8 @@
 package com.example.jpa.infrastructure.controller.student;
 
-import com.example.jpa.infrastructure.dto.student.output.StudentOutputDto;
-import com.example.jpa.infrastructure.application.student.StudentServicePort;
+import com.example.jpa.infrastructure.dto.output.StudentOutputDto;
+
+import com.example.jpa.infrastructure.application.port.StudentServicePort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

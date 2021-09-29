@@ -1,11 +1,17 @@
-package com.example.jpa.infrastructure.application.usuario;
+package com.example.jpa.infrastructure.application;
 
+import com.example.jpa.domain.Profesor;
+import com.example.jpa.domain.Student;
 import com.example.jpa.domain.Usuario;
 import com.example.jpa.exception.BeanNotFoundException;
 import com.example.jpa.exception.BeanUnprocesableException;
+import com.example.jpa.infrastructure.application.port.UsuarioServicePort;
+import com.example.jpa.infrastructure.repository.ProfesorRepository;
+import com.example.jpa.infrastructure.repository.StudentRepository;
 import com.example.jpa.infrastructure.repository.UsuarioRepositorio;
-import com.example.jpa.infrastructure.dto.usuario.output.UsuarioOutputDto;
-import com.example.jpa.infrastructure.dto.usuario.input.UsuarioInputDto;
+import com.example.jpa.infrastructure.dto.output.UsuarioOutputDto;
+import com.example.jpa.infrastructure.dto.input.UsuarioInputDto;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -15,10 +21,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UsuarioService implements UsuarioServicePort{
+public class UsuarioService implements UsuarioServicePort {
 
     @Autowired
     UsuarioRepositorio usuarioRepositorio;
+
+    @Autowired
+    ProfesorRepository profesorRepository;
+
+    @Autowired
+    StudentRepository studentRepository;
 
     public List<UsuarioOutputDto> getAll() {
 
@@ -67,8 +79,17 @@ public class UsuarioService implements UsuarioServicePort{
     }
 
 
-    public void deleteUsuarioById(Integer id) throws BeanNotFoundException{
-        usuarioRepositorio.delete(usuarioRepositorio.findById(id).orElseThrow(() -> new BeanNotFoundException("Usuario: con id= " + id + " no encontrado")));
+    public void deleteUsuarioById(Integer id) throws BeanNotFoundException,NotFoundException{
+        Usuario usuario = usuarioRepositorio.findById(id).orElseThrow(() -> new BeanNotFoundException("Usuario: con id= " + id + " no encontrado"));
+
+        Student student = studentRepository.getUsuario(usuario);
+
+        Profesor profesor = profesorRepository.getUsuario(usuario);
+        if(student != null || profesor != null) {
+            throw new NotFoundException("La asignatura tiene algun estudiante matriculado. No puede ser borrada.");
+        } else {
+            usuarioRepositorio.delete(usuarioRepositorio.findById(id).orElseThrow(() -> new BeanNotFoundException("Usuario: con id= " + id + " no encontrado")));
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 package com.example.jpa.domain;
 
-import com.example.jpa.infrastructure.dto.student.input.StudentInputDto;
+import com.example.jpa.infrastructure.dto.input.StudentInputDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -40,22 +40,25 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     String id_student;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario")
     Usuario usuario;
     @Column(nullable = false)
     int num_hours_week;
     String coments;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "id_profesor")
     Profesor id_profesor;
+
     @Column(nullable = false)
     String branch;
 
-    @ManyToMany(mappedBy = "studentList")
-
-    private List<Asignatura> asignaturaList;
+    @ManyToMany()
+    @JoinTable(name="estudiante_asignatura",
+            joinColumns = @JoinColumn(name = "id_student"),
+            inverseJoinColumns = @JoinColumn(name = "id_asignatura"))
+    private List<Asignatura> asignatura;
 
 
     public Student(StudentInputDto uin) {
@@ -72,7 +75,7 @@ public class Student {
         if (uin.getComents()!=null) this.coments = uin.getComents();
         this.num_hours_week = uin.getNum_hours_week();
         this.id_profesor = null;
-        this.asignaturaList = new ArrayList<>();
+        this.asignatura = new ArrayList<>();
     }
 
 
@@ -90,7 +93,7 @@ public class Student {
         if (uin.getComents()!=null) this.coments = uin.getComents();
         this.num_hours_week = uin.getNum_hours_week();
         if (profesoraInputDto!=null)  this.id_profesor = profesoraInputDto;
-        if (asignaturaList!=null)  this.asignaturaList = asignaturaList;
+        if (asignaturaList!=null)  this.asignatura = asignaturaList;
     }
 
 

@@ -1,12 +1,9 @@
 package com.example.jpa.infrastructure.controller.asignatura;
 
 import com.example.jpa.exception.BeanUnprocesableException;
-import com.example.jpa.infrastructure.application.asignatura.AsignaturaServicePort;
-import com.example.jpa.infrastructure.application.profesor.ProfesorServicePort;
-import com.example.jpa.infrastructure.dto.asignatura.input.AsignaturaInputDto;
-import com.example.jpa.infrastructure.dto.asignatura.output.AsignaturaOutputDto;
-import com.example.jpa.infrastructure.dto.profesor.input.ProfesorInputDto;
-import com.example.jpa.infrastructure.dto.profesor.output.ProfesorOutputDto;
+import com.example.jpa.infrastructure.application.port.AsignaturaServicePort;
+import com.example.jpa.infrastructure.dto.input.AsignaturaInputDto;
+import com.example.jpa.infrastructure.dto.output.AsignaturaOutputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
