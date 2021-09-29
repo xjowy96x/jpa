@@ -1,14 +1,14 @@
-package com.example.jpa.infrastructure.application;
+package com.example.jpa.infrastructure.application.usuario;
 
-import com.example.jpa.domain.Usuario;
 import com.example.jpa.exception.BeanNotFoundException;
 import com.example.jpa.exception.BeanUnprocesableException;
-import com.example.jpa.infrastructure.dto.input.UsuarioInputDto;
-import com.example.jpa.infrastructure.dto.output.UsuarioOutputDto;
+import com.example.jpa.infrastructure.dto.usuario.input.UsuarioInputDto;
+import com.example.jpa.infrastructure.dto.usuario.output.UsuarioOutputDto;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 
-import java.util.ArrayList;
 import java.util.List;
+
 
 public interface UsuarioServicePort {
 

@@ -1,9 +1,7 @@
-package com.example.jpa.infrastructure.controller;
+package com.example.jpa.infrastructure.controller.usuario;
 
-import com.example.jpa.exception.BeanNotFoundException;
-import com.example.jpa.infrastructure.application.UsuarioService;
-import com.example.jpa.infrastructure.application.UsuarioServicePort;
-import com.example.jpa.infrastructure.dto.output.UsuarioOutputDto;
+import com.example.jpa.infrastructure.application.usuario.UsuarioServicePort;
+import com.example.jpa.infrastructure.dto.usuario.output.UsuarioOutputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

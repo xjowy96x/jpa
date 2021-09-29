@@ -1,51 +1,52 @@
 package com.example.jpa.domain;
 
-import com.example.jpa.infrastructure.dto.input.UsuarioInputDto;
-import com.sun.istack.NotNull;
+import com.example.jpa.infrastructure.dto.usuario.input.UsuarioInputDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import java.util.Date;
 
+@Table(name = "usuario")
 @Entity
 @Data
 @NoArgsConstructor
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    int id_persona;
+
+    //@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    int id_user;
 
     @Column(nullable = false,length = 50)
     @Length(min = 6,max = 10, message = "The field must be at least 6 characters and at less 50")
     String user;
-    //@NotNull --> no deja meter valores al hacer insert nulos, pero no creo la columna con not null
+
     @Column(nullable = false)
     String password;
-    //@NotNull
+
     @Column(nullable = false)
     String name;
 
     String surname;
-    //@NotNull
+
     @Column(nullable = false)
     @Email(message = "No valido")
     String company_email;
-    //@NotNull
+
     @Column(nullable = false)
     @Email(message = "No valido")
     String personal_email;
-    //@NotNull
+
     @Column(nullable = false)
     String city;
-    //@NotNull
+
     @Column(nullable = false)
     Boolean active;
-    //@NotNull
+
     @Column(nullable = false)
     Date created_date;
 

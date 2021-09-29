@@ -1,8 +1,7 @@
-package com.example.jpa.infrastructure.dto.output;
+package com.example.jpa.infrastructure.dto.usuario.output;
 
 import com.example.jpa.domain.Usuario;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -22,7 +21,7 @@ public class UsuarioOutputDto {
 
 
     public UsuarioOutputDto(Usuario u) {
-        this.id_persona = u.getId_persona();
+        this.id_persona = u.getId_user();
         if (u.getUser()!=null)  this.user = u.getUser();
         if (u.getPassword()!=null) this.password = u.getPassword();
         if (u.getName()!=null) this.name = u.getName();
